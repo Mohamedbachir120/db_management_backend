@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Server;
-use App\Models\Access;
+use App\Models\AffectationAccess;
 
 class LinkedServer extends Model
 {
@@ -19,7 +19,7 @@ class LinkedServer extends Model
         return $this->belongsTo(Server::class,'destination_id');
     }
     
-    public function access(){
-        return $this->belongsTo(Access::class);
+    public function affectation_access(){
+        return $this->belongsToMany(AffectationAccess::class);
     }
 }

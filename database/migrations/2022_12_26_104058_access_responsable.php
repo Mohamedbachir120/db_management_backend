@@ -14,12 +14,12 @@ return new class extends Migration
     public function up()
     {
         //
-        Schema::create('access_bdd', function (Blueprint $table) {
+        Schema::create('access_responsable', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('bdd_id');
-            $table->foreign('bdd_id')->references('id')->on('bdds')->onDelete('cascade');;
             $table->unsignedBigInteger('access_id');
-            $table->foreign('access_id')->references('id')->on('accesses')->onDelete('cascade');
+            $table->foreign('access_id')->references('id')->on('accesses')->onDelete('cascade');;
+            $table->unsignedBigInteger('responsable_id');
+            $table->foreign('responsable_id')->references('id')->on('responsables')->onDelete('cascade');
 
 
         });
@@ -33,7 +33,7 @@ return new class extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('access_bdd');
+        Schema::dropIfExists('access_responsable');
 
     }
 };
