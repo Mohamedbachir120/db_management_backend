@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Responsable;
 use App\Models\Population;
+use App\Models\Bdd;
 class Project extends Model
 {
     use HasFactory;
@@ -15,6 +16,10 @@ class Project extends Model
     }
     public function populations(){
         return $this->belongsToMany(Population::class);
+    }
+    
+    public function bdds(){
+        return $this->belongsToMany(Bdd::class);
     }
     
 }
