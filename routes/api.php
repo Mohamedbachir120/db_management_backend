@@ -73,7 +73,7 @@ Route::controller(BddController::class)->middleware('auth:sanctum')->group(funct
 });
 
 
-Route::controller(LinkedServer::class)->middleware('auth:sanctum')->group(function(){
+Route::controller(LinkedServerController::class)->middleware('auth:sanctum')->group(function(){
 
     Route::get('/linked_server','index');
     Route::post('/linked_server','store');

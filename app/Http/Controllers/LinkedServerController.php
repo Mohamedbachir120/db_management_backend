@@ -15,7 +15,9 @@ class LinkedServerController extends Controller
     public function index()
     {
         //
-        return response()->json(LinkedServer::with("s"));
+
+        return response()->json(["linked server"=>LinkedServer::with("source","destination")->get()]);
+
 
     }
 
@@ -38,6 +40,12 @@ class LinkedServerController extends Controller
     public function store(Request $request)
     {
         //
+        LinkedServer::create($request->all());
+        return response()->json(["success"=>true,"message"=>"Linked server created successfully"],200);
+
+
+
+
     }
 
     /**
@@ -46,9 +54,17 @@ class LinkedServerController extends Controller
      * @param  \App\Models\LinkedServer  $linkedServer
      * @return \Illuminate\Http\Response
      */
-    public function show(LinkedServer $linkedServer)
+    public function show($id)
     {
-        //
+        //4
+        $linkedServer = LinkedServer::find($id);
+        
+        if($linkedServer == null) return response()->json(["linked server"=>null]);
+
+        return response()->json(["linked server"=>$linkedServer->with("source","destination","affectation_access")->first()]);
+
+
+
     }
 
     /**
@@ -69,9 +85,15 @@ class LinkedServerController extends Controller
      * @param  \App\Models\LinkedServer  $linkedServer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LinkedServer $linkedServer)
+    public function update(Request $request, $id)
     {
         //
+        LinkedServer::find($id)->update($request->all());
+        return response()->json(["success"=>true,"message"=>"Linked server updated successfully"],200);
+
+
+
+
     }
 
     /**
@@ -80,8 +102,13 @@ class LinkedServerController extends Controller
      * @param  \App\Models\LinkedServer  $linkedServer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LinkedServer $linkedServer)
+    public function destroy($id)
     {
         //
+
+        LinkedServer::find($id)->delete();
+        return response()->json(["success"=>true,"message"=>"Linked server deleted successfully"],200);
+
+
     }
 }
