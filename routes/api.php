@@ -10,6 +10,8 @@ use App\Http\Controllers\LinkedServerController;
 
 use App\Http\Controllers\BddController;
 
+use App\Http\Controllers\PrevillegeController;
+
 
 
 use App\Http\Helpers\Crypto;
@@ -81,5 +83,15 @@ Route::controller(LinkedServerController::class)->middleware('auth:sanctum')->gr
     Route::post('/linked_server/{id}','update');
     Route::delete('/linked_server/{id}','destroy');
 
+
+});
+
+
+Route::controller(PrevillegeController::class)->middleware('auth:sanctum')->group(function(){
+    Route::get('/previllege','index');
+    Route::post('/previllege','store');
+    Route::get('/previllege/{id}','show');
+    Route::post('/previllege/{id}','update');
+    Route::delete('/previllege/{id}','destroy');  
 
 });

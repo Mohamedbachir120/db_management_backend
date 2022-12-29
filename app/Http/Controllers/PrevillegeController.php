@@ -14,7 +14,9 @@ class PrevillegeController extends Controller
      */
     public function index()
     {
-        //
+        //:
+        return response()->json(["previllege"=>Previllege::all()]);
+
     }
 
     /**
@@ -36,6 +38,10 @@ class PrevillegeController extends Controller
     public function store(Request $request)
     {
         //
+        Previllege::create($request->all());
+        return response()->json(["success" => true,"message"=>"previllege created successfully"],200);
+
+
     }
 
     /**
@@ -44,9 +50,11 @@ class PrevillegeController extends Controller
      * @param  \App\Models\Previllege  $previllege
      * @return \Illuminate\Http\Response
      */
-    public function show(Previllege $previllege)
+    public function show($id)
     {
-        //
+        
+        return response()->json(["previllege"=>Previllege::find($id)],200);
+
     }
 
     /**
@@ -67,9 +75,14 @@ class PrevillegeController extends Controller
      * @param  \App\Models\Previllege  $previllege
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Previllege $previllege)
+    public function update(Request $request, $id)
     {
         //
+        Previllege::find($id)->update($request->all());
+
+        return response()->json(["success" => true,"message"=>"previllege updated successfully"],200);
+
+
     }
 
     /**
@@ -78,8 +91,10 @@ class PrevillegeController extends Controller
      * @param  \App\Models\Previllege  $previllege
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Previllege $previllege)
+    public function destroy($id)
     {
         //
+        Previllege::find($id)->delete();
+        return response()->json(["success" => true,"message"=>"previllege deleted successfully"],200);
     }
 }
