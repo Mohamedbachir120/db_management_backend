@@ -3,7 +3,16 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ConnectorController;
+use App\Http\Controllers\AccessController;
+use App\Http\Controllers\AffectationAccessController;
+use App\Http\Controllers\BddController;
+
+
+
 use App\Http\Helpers\Crypto;
+use App\Http\Helpers\SQLServerConnector;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,48 +32,40 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
 
-Route::get('/test_cnx', function () {
-    $serverName = "ctrl-mgmt.naftal.local\\MSSQLSERVER, 1433"; //serverName\instanceName, portNumber (default is 1433)
-    $connectionInfo = array( "Database"=>"msdb", "UID"=>"DBmgmt", "PWD"=>"eye0nD8@all+!mes");
+Route::get('/get_db',[ConnectorController::class,'save_db']);
 
-    // $serverName = "DBSQLIMMO.naftal.local\\MSSQLSERVER, 1433"; //serverName\instanceName, portNumber (default is 1433)
-    // $connectionInfo = array( "Database"=>"DBinventaire", "UID"=>"adminInv", "PWD"=>"!2NV-adm*22");
-    // $host="DWRH";
-    // exec("nslookup " . $host, $output, $result);
 
-    // return ($output);
-    $conn = sqlsrv_connect( $serverName, $connectionInfo);
-    if( $conn ) {
-        $sql = "SELECT *  FROM msdb.dbo.sysmanagement_shared_registered_servers_internal;";
+Route::controller(AccessController::class)->middleware('auth:sanctum')->group(function(){
 
-        $stmt = sqlsrv_query( $conn, $sql );
-        if( $stmt === false) {
-            die( print_r( sqlsrv_errors(), true) );
-        }
-        $result = [];
-        $count = 0  ;
-        while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
-            $result[] = $row;
-        }
-        sqlsrv_free_stmt( $stmt);
-        return $result;
-        // return json_encode( $result );
-    }else{
-         return "Connection could not be established.<br />";
-         die( print_r( sqlsrv_errors(), true));
-    }
+    Route::get('/access','index');
+    Route::post('/access','store');
+    Route::get('/access/{id}','show');
+    Route::post('/access/{id}','update');
+    Route::delete('/access/{id}','destroy');
 
-   
 
-    
 });
 
-Route::get('/test_ecryption', function () {
-    
-    $message = 'Ready your ammunition; we attack at dawn.';
-    $encrypted = Crypto::encrypt($message);
-    $decrypted = Crypto::decrypt($encrypted);
+Route::controller(AffectationAccessController::class)->middleware('auth:sanctum')->group(function(){
 
-    return $decrypted;
-    
+    Route::get('/affectation_access','index');
+    Route::post('/affectation_access','store');
+    Route::get('/affectation_access/{id}','show');
+    Route::post('/affectation_access/{id}','update');
+    Route::delete('/affectation_access/{id}','destroy');
+
+
+});
+
+
+
+Route::controller(BddController::class)->middleware('auth:sanctum')->group(function(){
+
+    Route::get('/bdd','index');
+    Route::post('/bdd','store');
+    Route::get('/bdd/{id}','show');
+    Route::post('/bdd/{id}','update');
+    Route::delete('/bdd/{id}','destroy');
+
+
 });

@@ -11,7 +11,7 @@ use App\Models\Responsable;
 class Access extends Model
 {
     use HasFactory;
-
+    protected $fillable = ['username','pwd','auth_type'];
     protected $hidden = [
         'pwd',
         'remember_token',

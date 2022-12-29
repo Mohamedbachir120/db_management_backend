@@ -12,6 +12,8 @@ class Server extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['dns','ip','OSVersion','instance_name','port','creation_date'];
+
     public function bdds(){
         return $this->hasMany(Bdd::class);
     }

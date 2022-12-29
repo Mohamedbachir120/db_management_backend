@@ -11,6 +11,9 @@ use App\Models\Access;
 class Bdd extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name','engine','status','sgbd_id','server_id','creation_date'];
+
     public function projects(){
         return $this->belongsToMany(Project::class);
     }

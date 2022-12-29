@@ -15,6 +15,7 @@ class AffectationAccessController extends Controller
     public function index()
     {
         //
+        return response()->json(["affectation_access"=>AffectationAccess::all()],200);
     }
 
     /**
@@ -36,6 +37,12 @@ class AffectationAccessController extends Controller
     public function store(Request $request)
     {
         //
+        AffectationAccess::create([
+            "access_id"=>$request["access_id"],
+            "bdd_id"=>$request["bdd_id"]
+        ]);
+        return response()->json(["success"=>true,"message"=>"created successfully"],200);
+
     }
 
     /**
@@ -44,9 +51,12 @@ class AffectationAccessController extends Controller
      * @param  \App\Models\AffectationAccess  $affectationAccess
      * @return \Illuminate\Http\Response
      */
-    public function show(AffectationAccess $affectationAccess)
+    public function show($id)
     {
         //
+        return response()->json(["affectation_access"=>AffectationAccess::find($id)],200);
+
+
     }
 
     /**
@@ -67,9 +77,16 @@ class AffectationAccessController extends Controller
      * @param  \App\Models\AffectationAccess  $affectationAccess
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AffectationAccess $affectationAccess)
+    public function update(Request $request, $id)
     {
         //
+        AffectationAccess::where('id',$id)
+            ->update([
+            "access_id"=>$request["access_id"],
+            "bdd_id"=>$request["bdd_id"]
+        ]);
+        return response()->json(["success"=>true,"message"=>"updated successfully"],200);
+
     }
 
     /**
@@ -78,8 +95,10 @@ class AffectationAccessController extends Controller
      * @param  \App\Models\AffectationAccess  $affectationAccess
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AffectationAccess $affectationAccess)
+    public function destroy($id)
     {
         //
+        AffectationAccess::destroy($id);
+        return response()->json(['success'=>true,"message"=>"deleted successfully"],200);
     }
 }

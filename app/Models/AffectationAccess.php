@@ -13,6 +13,8 @@ class AffectationAccess extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['access_id','bdd_id'];
+
     public function linked_servers(){
         return $this->belongsToMany(LinkedServer::class);
     }

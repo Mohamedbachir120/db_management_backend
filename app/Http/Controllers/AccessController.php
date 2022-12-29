@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Access;
 use Illuminate\Http\Request;
+use App\Http\Helpers\Crypto;
 
 class AccessController extends Controller
 {
@@ -12,9 +13,11 @@ class AccessController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
     {
         //
+        return response()->json(["access"=>Access::all()],200);
     }
 
     /**
@@ -22,9 +25,10 @@ class AccessController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create(Request $request)
+    {   
+       
+
     }
 
     /**
@@ -36,6 +40,19 @@ class AccessController extends Controller
     public function store(Request $request)
     {
         //
+        $password = null;
+        if($request["auth_type"] == 0){
+
+            $password = Crypto::encrypt($request["pwd"]);
+
+        }
+        Access::create([
+            'username'=>$request["username"],
+            'pwd'=>$password,
+            "auth_type"=>$request["auth_type"]
+        ]);
+        
+        return response()->json(["success"=>true,"message"=>"created successfully"],200);
     }
 
     /**
@@ -44,9 +61,9 @@ class AccessController extends Controller
      * @param  \App\Models\Access  $access
      * @return \Illuminate\Http\Response
      */
-    public function show(Access $access)
+    public function show($id)
     {
-        //
+            return response()->json(["access"=>Access::find($id)]);
     }
 
     /**
@@ -67,9 +84,23 @@ class AccessController extends Controller
      * @param  \App\Models\Access  $access
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Access $access)
-    {
-        //
+    public function update(Request $request,$id)
+    {   
+
+        $password = null;
+        if($request["auth_type"] == 0){
+
+            $password = Crypto::encrypt($request["pwd"]);
+
+        }
+        Access::where('id',$id)
+            ->update([
+            'username'=>$request["username"],
+            'pwd'=>$password,
+            "auth_type"=>$request["auth_type"]
+        ]);
+        
+        return response()->json(["success"=>true,"message"=>"updated successfully"],200);
     }
 
     /**
@@ -78,8 +109,10 @@ class AccessController extends Controller
      * @param  \App\Models\Access  $access
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Access $access)
+    public function destroy($id)
     {
-        //
+        Access::destroy($id);
+        return response()->json(['success'=>true,"message"=>"deleted successfully"],200);
+        
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('username');
             $table->string('pwd')->nullable();
+            // 0 for sql server authentication
             $table->integer('auth_type')->default(0);
             $table->timestamps();
             
