@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ConnectorController;
 use App\Http\Controllers\AccessController;
 use App\Http\Controllers\AffectationAccessController;
+use App\Http\Controllers\LinkedServerController;
+
 use App\Http\Controllers\BddController;
 
 
@@ -66,6 +68,18 @@ Route::controller(BddController::class)->middleware('auth:sanctum')->group(funct
     Route::get('/bdd/{id}','show');
     Route::post('/bdd/{id}','update');
     Route::delete('/bdd/{id}','destroy');
+
+
+});
+
+
+Route::controller(LinkedServer::class)->middleware('auth:sanctum')->group(function(){
+
+    Route::get('/linked_server','index');
+    Route::post('/linked_server','store');
+    Route::get('/linked_server/{id}','show');
+    Route::post('/linked_server/{id}','update');
+    Route::delete('/linked_server/{id}','destroy');
 
 
 });

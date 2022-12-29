@@ -10,6 +10,8 @@ use App\Models\AffectationAccess;
 class LinkedServer extends Model
 {
     use HasFactory;
+    protected $fillable = ["name","type","creation_date","source_id","destination_id","access_id","create_method"];
+
 
     public function source(){
         return $this->belongsTo(Server::class,'source_id');

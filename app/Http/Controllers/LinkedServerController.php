@@ -15,6 +15,8 @@ class LinkedServerController extends Controller
     public function index()
     {
         //
+        return response()->json(LinkedServer::with("s"));
+
     }
 
     /**
