@@ -15,6 +15,9 @@ class PopulationController extends Controller
     public function index()
     {
         //
+        return response()->json(["populations"=>Population::all()],200);
+
+
     }
 
     /**
@@ -36,6 +39,11 @@ class PopulationController extends Controller
     public function store(Request $request)
     {
         //
+        Population::create($request->all());
+
+        return response()->json(["success"=>true,"message"=>"Population created successfully"],200);
+        
+
     }
 
     /**
@@ -44,9 +52,12 @@ class PopulationController extends Controller
      * @param  \App\Models\Population  $population
      * @return \Illuminate\Http\Response
      */
-    public function show(Population $population)
+    public function show($id)
     {
-        //
+        $population = Population::find($id);
+
+        return response()->json(["population"=>$population],200);
+        
     }
 
     /**
@@ -67,9 +78,14 @@ class PopulationController extends Controller
      * @param  \App\Models\Population  $population
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Population $population)
+    public function update(Request $request, $id)
     {
-        //
+        Population::find($id)->update($request->all());
+
+        return response()->json(["success"=>true,"message"=>"Population updated successfully"],200);
+        
+
+
     }
 
     /**
@@ -78,8 +94,10 @@ class PopulationController extends Controller
      * @param  \App\Models\Population  $population
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Population $population)
+    public function destroy($id)
     {
-        //
+        Population::find($id)->delete();
+        return response()->json(["success"=>true,"message"=>"Population deleted successfully"],200);
+        
     }
 }

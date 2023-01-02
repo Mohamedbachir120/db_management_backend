@@ -11,6 +11,9 @@ use App\Http\Controllers\LinkedServerController;
 use App\Http\Controllers\BddController;
 
 use App\Http\Controllers\PrevillegeController;
+use App\Http\Controllers\PopulationController;
+
+
 
 
 
@@ -34,7 +37,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/auth/register', [AuthController::class, 'createUser']);
-Route::post('/auth/login', [AuthController::class, 'loginUser']);
+Route::post('/auth/login', [AuthController::class, 'loginUser'])->name('login');
+Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
 
 Route::get('/get_db',[ConnectorController::class,'save_db']);
 
@@ -86,6 +91,13 @@ Route::controller(LinkedServerController::class)->middleware('auth:sanctum')->gr
 
 });
 
+Route::controller(PopulationController::class)->middleware('auth:sanctum')->group(function(){
+    Route::get('/population','index');
+    Route::post('/population','store');
+    Route::get('/population/{id}','show');
+    Route::post('/population/{id}','update');
+    Route::delete('/population/{id}','destroy');
+});
 
 Route::controller(PrevillegeController::class)->middleware('auth:sanctum')->group(function(){
     Route::get('/previllege','index');

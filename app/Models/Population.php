@@ -8,6 +8,7 @@ use App\Models\Project;
 class Population extends Model
 {
     use HasFactory;
+    protected $fillable = ["designation"];
     public function projects(){
         return $this->belongsToMany(Project::class);
     }
