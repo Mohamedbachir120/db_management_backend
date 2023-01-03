@@ -13,9 +13,11 @@ use App\Http\Controllers\BddController;
 use App\Http\Controllers\PrevillegeController;
 use App\Http\Controllers\PopulationController;
 
+use App\Http\Controllers\ProjectController;
 
-
-
+use App\Http\Controllers\ResponsableController;
+use App\Http\Controllers\ServerController;
+use App\Http\Controllers\SgbdController;
 
 use App\Http\Helpers\Crypto;
 use App\Http\Helpers\SQLServerConnector;
@@ -106,4 +108,43 @@ Route::controller(PrevillegeController::class)->middleware('auth:sanctum')->grou
     Route::post('/previllege/{id}','update');
     Route::delete('/previllege/{id}','destroy');  
 
+});
+
+Route::controller(ProjectController::class)->middleware('auth:sanctum')->group(function(){
+
+    Route::get('/project','index');
+    Route::post('/project','store');
+    Route::get('/project/{id}','show');
+    Route::post('/project/{id}','update');
+    Route::delete('/project/{id}','destroy');
+});
+
+Route::controller(ResponsableController::class)->middleware('auth:sanctum')->group(function(){
+
+    Route::get('/responsable','index');
+    Route::post('/responsable','store');
+    Route::get('/responsable/{id}','show');
+    Route::post('/responsable/{id}','update');
+    Route::delete('/responsable/{id}','destroy');     
+
+
+});
+
+Route::controller(ServerController::class)->middleware('auth:sanctum')->group(function(){
+
+    Route::get('/server','index');
+    Route::post('/server','store');
+    Route::get('/server/{id}','show');
+    Route::post('/server/{id}','update');
+    Route::delete('/server/{id}','destroy');  
+
+});
+
+Route::controller(SgbdController::class)->middleware('auth:sanctum')->group(function(){
+
+    Route::get('/sgbd','index');
+    Route::post('/sgbd','store');
+    Route::get('/sgbd/{id}','show');
+    Route::post('/sgbd/{id}','update');
+    Route::delete('/sgbd/{id}','destroy');  
 });

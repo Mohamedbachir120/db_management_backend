@@ -15,6 +15,8 @@ class ProjectController extends Controller
     public function index()
     {
         //
+        return response()->json(['projects' => Project::all()],200);
+
     }
 
     /**
@@ -35,7 +37,10 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Project::create($request->all());
+        return response()->json(['success' => true,"message" => "Project Created Successfully"],200);
+
+
     }
 
     /**
@@ -44,9 +49,13 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show($id)
     {
         //
+        $project = Project::find($id);
+        return response()->json(['project' => $project],200);
+
+
     }
 
     /**
@@ -67,9 +76,14 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, $id)
     {
-        //
+        $project = Project::find($id);
+        $project->update($request->all());
+        return response()->json(['success' => true,"message" => "Project Updated Successfully"],200);
+
+
+
     }
 
     /**
@@ -78,8 +92,10 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy($id)
     {
-        //
+            Project::find($id)->delete();
+            return response()->json(['success' => true,"message" => "Project Deleted Successfully"],200);
+            
     }
 }

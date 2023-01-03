@@ -15,6 +15,8 @@ class ResponsableController extends Controller
     public function index()
     {
         //
+        return response()->json(["responsables"=>Responsable::all()],200);
+
     }
 
     /**
@@ -36,6 +38,11 @@ class ResponsableController extends Controller
     public function store(Request $request)
     {
         //
+        Responsable::create($request->all());
+
+        return response()->json(["message"=>"Responsable was created successfully"], 200);
+
+
     }
 
     /**
@@ -44,9 +51,14 @@ class ResponsableController extends Controller
      * @param  \App\Models\Responsable  $responsable
      * @return \Illuminate\Http\Response
      */
-    public function show(Responsable $responsable)
+    public function show($id)
     {
         //
+        $responsable = Responsable::find($id);
+
+        return response()->json(["responsable"=>$responsable],200);
+
+
     }
 
     /**
@@ -67,9 +79,16 @@ class ResponsableController extends Controller
      * @param  \App\Models\Responsable  $responsable
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Responsable $responsable)
+    public function update(Request $request, $id)
     {
         //
+        $responsable = Responsable::find($id);
+        $responsable->update($request->all());
+
+        return response()->json(["message"=>"Responsable was updated successfully"], 200);
+
+
+
     }
 
     /**
@@ -78,8 +97,15 @@ class ResponsableController extends Controller
      * @param  \App\Models\Responsable  $responsable
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Responsable $responsable)
+    public function destroy($id)
     {
         //
+        $responsable = Responsable::find($id);
+        $responsable->delete();
+
+        return response()->json(["message"=>"Responsable was deleted successfully"], 200);
+
+
+
     }
 }

@@ -15,6 +15,7 @@ class SgbdController extends Controller
     public function index()
     {
         //
+        return response()->json(['sgbd'=>Sgbd::all()],200);
     }
 
     /**
@@ -36,6 +37,9 @@ class SgbdController extends Controller
     public function store(Request $request)
     {
         //
+        Sgbd::create($request->all());
+        return response()->json(["success"=>true,"message"=>"Sgbd created successfully"],200);
+
     }
 
     /**
@@ -44,9 +48,12 @@ class SgbdController extends Controller
      * @param  \App\Models\Sgbd  $sgbd
      * @return \Illuminate\Http\Response
      */
-    public function show(Sgbd $sgbd)
+    public function show($id)
     {
         //
+
+        return response()->json(["sgbd"=>Sgbd::find($id)],200);
+
     }
 
     /**
@@ -67,9 +74,12 @@ class SgbdController extends Controller
      * @param  \App\Models\Sgbd  $sgbd
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Sgbd $sgbd)
+    public function update(Request $request, $id)
     {
         //
+        Sgbd::find($id)->update($request->all());
+        return response()->json(["success"=>true,"message"=>"Sgbd updated successfully"],200);
+
     }
 
     /**
@@ -78,8 +88,10 @@ class SgbdController extends Controller
      * @param  \App\Models\Sgbd  $sgbd
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sgbd $sgbd)
+    public function destroy($id)
     {
-        //
+        Sgbd::find($id)->delete();
+        return response()->json(["success"=>true,"message"=>"Sgbd deleted successfully"],200);
+
     }
 }

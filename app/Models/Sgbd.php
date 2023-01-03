@@ -9,7 +9,7 @@ use App\Models\Bdd;
 class Sgbd extends Model
 {
     use HasFactory;
-
+    protected $fillable = ["name","version"];
     public function bdds(){
         return $this->hasMany(Bdd::class);
     }

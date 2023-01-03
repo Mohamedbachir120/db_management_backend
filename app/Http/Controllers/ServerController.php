@@ -15,6 +15,8 @@ class ServerController extends Controller
     public function index()
     {
         //
+        return response()->json(['servers' => Server::all()],200);
+
     }
 
     /**
@@ -36,6 +38,9 @@ class ServerController extends Controller
     public function store(Request $request)
     {
         //
+        Server::create($request->all());
+        return response()->json(["success"=>true,"message"=>"Server created successfully"],200);
+
     }
 
     /**
@@ -44,9 +49,11 @@ class ServerController extends Controller
      * @param  \App\Models\Server  $server
      * @return \Illuminate\Http\Response
      */
-    public function show(Server $server)
+    public function show($id)
     {
         //
+        return response()->json(['server' => Server::find($id)],200);
+
     }
 
     /**
@@ -67,9 +74,13 @@ class ServerController extends Controller
      * @param  \App\Models\Server  $server
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Server $server)
+    public function update(Request $request, $id)
     {
         //
+        Server::find($id)->update($request->all());
+        return response()->json(["success"=>true,"message"=>"Server updated successfully"],200);
+
+
     }
 
     /**
@@ -78,8 +89,12 @@ class ServerController extends Controller
      * @param  \App\Models\Server  $server
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Server $server)
+    public function destroy($id)
     {
-        //
+        Server::find($id)->delete();
+
+        return response()->json(["success"=>true,"message"=>"Server deleted successfully"],200);
+
+
     }
 }
