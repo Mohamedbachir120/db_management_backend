@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use DB;
 class AuthController extends Controller
 {
     /**
@@ -106,5 +106,17 @@ class AuthController extends Controller
 
         
         return response()->json(['success' => true,], 200);
+    }
+    public function refresh(Request $request){
+        $splited = explode("|",$request->bearerToken());
+        $token = DB::table('personal_access_tokens')->where('id',$splited[0])->first(); 
+        $user = User::find($token->tokenable_id);
+        return response()->json([
+            'status' => true,
+            'message' => 'User Logged In Successfully',
+            'id'=> $user->id,
+            "name"=>$user->name,
+            'token' => $user->createToken("API TOKEN")->plainTextToken
+        ], 200);
     }
 }

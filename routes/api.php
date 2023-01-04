@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'loginUser'])->name('login');
 Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-
+Route::post('/auth/refresh',[AuthController::class,'refresh']);
 
 Route::get('/get_db',[ConnectorController::class,'save_db']);
 

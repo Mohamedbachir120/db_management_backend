@@ -12,10 +12,15 @@ class ServerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
+
     {
-        //
-        return response()->json(['servers' => Server::all()],200);
+        $servers =Server::withCount('bdds')
+                ->where("dns","like","%".$request["keyword"]."%")
+                ->orWhere("ip","like","%".$request["keyword"]."%")
+                ->orWhere("port","like","%".$request["keyword"]."%")
+                ->paginate(10);
+        return response()->json($servers ,200);
 
     }
 

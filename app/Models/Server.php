@@ -25,4 +25,8 @@ class Server extends Model
     public function sources(){
         return $this->hasMany(LinkedServer::class,'source_id');
     }
+
+ 
+
+    
 }

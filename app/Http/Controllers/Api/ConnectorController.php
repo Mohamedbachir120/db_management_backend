@@ -56,13 +56,13 @@ class ConnectorController extends Controller
                     //throw $th;
                     $row["ip"]="";
                 }
-                Server::create([
-                'dns' => $server,
-                'ip'=>$row["ip"],
-                "OSVersion"=>"Windows server 2016",
-                "instance_name"=>$server,
-                "port"=>$port,
-                "creation_date"=>"28-12-2022"]);
+                // Server::create([
+                // 'dns' => $server,
+                // 'ip'=>$row["ip"],
+                // "OSVersion"=>"Windows server 2016",
+                // "instance_name"=>$server,
+                // "port"=>$port,
+                // "creation_date"=>"28-12-2022"]);
                 
                 // $conn2 = SQLServerConnector::connect($server,$port,"naftal\sqladmin","$9L*D8@dm!","",1);
                 // if( $conn2 ) {
