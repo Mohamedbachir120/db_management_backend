@@ -12,10 +12,17 @@ class ResponsableController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        return response()->json(["responsables"=>Responsable::all()],200);
+        if($request["keyword"] == "all"){
+            return response()->json(Responsable::all() ,200);
+
+        }
+        $sgbd =Responsable::where("name","like","%".$request["keyword"]."%")
+                            ->orWhere("email","like","%".$request["keyword"]."%")
+                            ->orWhere("phone","like","%".$request["keyword"]."%")
+                            ->paginate(10);
+        return response()->json($sgbd ,200);
 
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Database\Eloquent\Builder;
 
 use App\Models\LinkedServer;
 use Illuminate\Http\Request;
@@ -12,11 +13,22 @@ class LinkedServerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        $linked_servers =LinkedServer::with("source","destination")
+        ->where("name","like","%".$request["keyword"]."%")
+        ->orWhere("type","like","%".$request["keyword"]."%")
+        ->orWhere("creation_date","like","%".$request["keyword"]."%")
+        ->orWhereHas('source', function   (Builder $query) use ($request) {
+            return  $query->where('dns',"like","%".$request["keyword"]."%");
+        })
+        ->orWhereHas('destination', function   (Builder $query) use ($request) {
+            return  $query->where('dns',"like","%".$request["keyword"]."%");
+        })
+        ->paginate(10);
 
-        return response()->json(["linked server"=>LinkedServer::with("source","destination")->get()]);
+        return response()->json($linked_servers,200);
 
 
     }

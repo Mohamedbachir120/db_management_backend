@@ -12,12 +12,15 @@ class PopulationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        return response()->json(["populations"=>Population::all()],200);
+        if($request["keyword"] == "all"){
+            return response()->json(["data"=>Population::all()] ,200);
 
-
+        }
+        $population =Population::where("designation","like","%".$request["keyword"]."%")
+                ->paginate(10);
+        return response()->json($population ,200);
     }
 
     /**

@@ -12,10 +12,16 @@ class SgbdController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        return response()->json(['sgbd'=>Sgbd::all()],200);
+        if($request["keyword"] == "all"){
+            return response()->json(["data"=>Sgbd::all()] ,200);
+
+        }
+        $sgbd =Sgbd::where("name","like","%".$request["keyword"]."%")
+                ->orWhere("version","like","%".$request["keyword"]."%")
+                ->paginate(10);
+        return response()->json($sgbd ,200);
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Database\Eloquent\Builder;
 
 use App\Models\Bdd;
 use Illuminate\Http\Request;
@@ -12,10 +13,20 @@ class BddController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        return response()->json(["bdd"=>Bdd::all()],200);
+        $bdd =Bdd::where("name","like","%".$request["keyword"]."%")
+        ->orWhere("status","like","%".$request["keyword"]."%")
+        ->orWhere("engine","like","%".$request["keyword"]."%")
+        ->orWhereHas('server', function   (Builder $query) use ($request) {
+            return  $query->where('dns',"like","%".$request["keyword"]."%");
+        })
+        ->with("sgbd","server")
+     
+        ->paginate(10);
+        
+        return response()->json($bdd,200);
+
     }
 
     /**

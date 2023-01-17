@@ -15,6 +15,10 @@ class ServerController extends Controller
     public function index(Request $request)
 
     {
+        if($request["keyword"] == "all"){
+            return response()->json(["data"=>Server::all()] ,200);
+
+        }
         $servers =Server::withCount('bdds')
                 ->where("dns","like","%".$request["keyword"]."%")
                 ->orWhere("ip","like","%".$request["keyword"]."%")

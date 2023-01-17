@@ -12,10 +12,16 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        return response()->json(['projects' => Project::all()],200);
+        if($request["keyword"] == "all"){
+            return response()->json(Access::all() ,200);
+
+        }
+        $project =Project::where("name","like","%".$request["keyword"]."%")
+                ->orWhere("description","like","%".$request["keyword"]."%")
+                ->paginate(10);
+        return response()->json($project ,200);
 
     }
 

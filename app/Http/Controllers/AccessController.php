@@ -14,10 +14,16 @@ class AccessController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-    public function index()
+    public function index(Request $request)
     {
-        //
-        return response()->json(["access"=>Access::all()],200);
+        if($request["keyword"] == "all"){
+            return response()->json(["data"=>Access::all()] ,200);
+
+        }
+        $access =Access::where("username","like","%".$request["keyword"]."%")
+                ->orWhere("auth_type",$request["keyword"])
+                ->paginate(10);
+        return response()->json($access ,200);
     }
 
     /**
