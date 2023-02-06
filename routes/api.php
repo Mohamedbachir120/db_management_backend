@@ -41,10 +41,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'loginUser'])->name('login');
 Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/auth/getPassword/{id}', [AuthController::class, 'getPassword'])->middleware('auth:sanctum');
+Route::get('/stats',[AuthController::class,'stats']);
+Route::POST('/update_password',[AuthController::class,'update_password']);
+
+
 Route::post('/auth/refresh',[AuthController::class,'refresh']);
 
 Route::get('/get_db',[ConnectorController::class,'save_db']);
-
 
 Route::controller(AccessController::class)->middleware('auth:sanctum')->group(function(){
 
@@ -53,6 +57,8 @@ Route::controller(AccessController::class)->middleware('auth:sanctum')->group(fu
     Route::get('/access/{id}','show');
     Route::post('/access/{id}','update');
     Route::delete('/access/{id}','destroy');
+    Route::get('/access/getLinkedPrevillege/{id}','getLinkedPrevillege');
+    Route::post('/access/linkPrevillege/{id}','linkPrevillege');
 
 
 });
@@ -77,7 +83,8 @@ Route::controller(BddController::class)->middleware('auth:sanctum')->group(funct
     Route::get('/bdd/{id}','show');
     Route::post('/bdd/{id}','update');
     Route::delete('/bdd/{id}','destroy');
-
+    Route::get('/bdd_access/{id}','access');
+    Route::post('/bdd/linkAccess/{id}','linkAccess');
 
 });
 
@@ -107,6 +114,9 @@ Route::controller(PrevillegeController::class)->middleware('auth:sanctum')->grou
     Route::get('/previllege/{id}','show');
     Route::post('/previllege/{id}','update');
     Route::delete('/previllege/{id}','destroy');  
+    Route::post('/previllege/linkAccess/{id}',"linkAccess");
+    Route::get('/previllege/getLinkedAccess/{id}','getLinkedAccess');
+
 
 });
 
@@ -117,6 +127,13 @@ Route::controller(ProjectController::class)->middleware('auth:sanctum')->group(f
     Route::get('/project/{id}','show');
     Route::post('/project/{id}','update');
     Route::delete('/project/{id}','destroy');
+    Route::post('/linkDB/{id}','linkDB');
+    Route::get('/getLinkedDb/{id}','getLinkedDb');
+    Route::post('/linkResponsable/{id}','linkResponsable');
+    Route::get('/getLinkedResponsables/{id}','getLinkedResponsables');
+    Route::post('/linkPopulation/{id}','linkPopulation');
+    Route::get('/getLinkedPopulations/{id}','getLinkedPopulations');
+
 });
 
 Route::controller(ResponsableController::class)->middleware('auth:sanctum')->group(function(){
@@ -126,6 +143,8 @@ Route::controller(ResponsableController::class)->middleware('auth:sanctum')->gro
     Route::get('/responsable/{id}','show');
     Route::post('/responsable/{id}','update');
     Route::delete('/responsable/{id}','destroy');     
+    Route::post('/linkAccess/{id}','linkAccess');
+    Route::get('/getLinkedAccess/{id}','getLinkedAccess');
 
 
 });

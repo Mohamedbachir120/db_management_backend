@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use DB;
+use App\Models\Access;
+use App\Http\Helpers\Crypto;
+use App\Models\Population;
+use App\Models\Project;
+use App\Models\Server;
+
+
 class AuthController extends Controller
 {
     /**
@@ -118,5 +125,39 @@ class AuthController extends Controller
             "name"=>$user->name,
             'token' => $user->createToken("API TOKEN")->plainTextToken
         ], 200);
+    }
+    public function getPassword(Request $request,$id){
+     
+        $access = Access::find($id);
+
+         if(Hash::check($request["password"], Auth::user()->password)){
+
+            return response()->json(['success' => true,"password"=>Crypto::decrypt($access->pwd)], 200);
+
+        }else{
+            return response()->json(['success' => false,"password"=>""], 200);
+
+        }
+    }
+    public function stats(Request $request){
+
+        $populations = Population::withCount("projects")->get();
+        $servers = Server::withCount("bdds")->take(10)->orderBy("bdds_count","desc")->get();
+        return response()->json(["populations"=>$populations,"servers"=>$servers],200);
+
+    }
+    public function update_password(Request $request){
+        $token = DB::table('personal_access_tokens')->where("id",explode("|",$request->bearerToken())[0])->first();    
+        $user =  User::find($token->tokenable_id);
+
+        if(Hash::check($request["oldpassword"], $user->password)){
+            $user->password = Hash::make($request["password"]);
+            $user->save();
+            return response()->json(['success'=>true,"message"=>"updated successfully"],200);
+
+         }else{
+            return response()->json(['success'=>false,"message"=>"Ancien mot de passe incorrecte"],401);
+
+         }
     }
 }

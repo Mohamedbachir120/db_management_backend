@@ -15,7 +15,7 @@ class ResponsableController extends Controller
     public function index(Request $request)
     {
         if($request["keyword"] == "all"){
-            return response()->json(Responsable::all() ,200);
+            return response()->json(["data"=>Responsable::all()] ,200);
 
         }
         $sgbd =Responsable::where("name","like","%".$request["keyword"]."%")
@@ -25,6 +25,16 @@ class ResponsableController extends Controller
         return response()->json($sgbd ,200);
 
     }
+    public function show($id)
+    {
+        //
+        $responsable = Responsable::find($id);
+        return response()->json($responsable,200);
+
+
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -58,15 +68,7 @@ class ResponsableController extends Controller
      * @param  \App\Models\Responsable  $responsable
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-        $responsable = Responsable::find($id);
-
-        return response()->json(["responsable"=>$responsable],200);
-
-
-    }
+   
 
     /**
      * Show the form for editing the specified resource.
@@ -96,6 +98,16 @@ class ResponsableController extends Controller
 
 
 
+    }
+    public function linkAccess(Request $request,$id){
+        $responsable = Responsable::find($id);
+        $responsable->accesses()->sync($request["access"]);
+        return response()->json(['success' => true,"message" => "Responsable Updated Successfully"],200);
+
+    }
+    public function getLinkedAccess(Request $request,$id){
+        $responsable = Responsable::find($id);
+        return response()->json($responsable->accesses,200);
     }
 
     /**

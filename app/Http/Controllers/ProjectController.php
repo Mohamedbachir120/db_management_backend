@@ -59,10 +59,43 @@ class ProjectController extends Controller
     {
         //
         $project = Project::find($id);
-        return response()->json(['project' => $project],200);
+        return response()->json($project,200);
 
 
     }
+
+    public function linkDB(Request $request,$id){
+        $project = Project::find($id);
+        $project->bdds()->sync($request["databases"]);
+        return response()->json(['success' => true,"message" => "Project Updated Successfully"],200);
+
+    }
+    public function linkResponsable(Request $request,$id){
+        $project = Project::find($id);
+        $project->responsables()->sync($request["responsables"]);   
+        return response()->json(['success' => true,"message" => "Project Updated Successfully"],200);
+
+    }
+    public function linkPopulation(Request $request,$id){
+        $project = Project::find($id);
+        $project->populations()->sync($request["populations"]);   
+        return response()->json(['success' => true,"message" => "Project Updated Successfully"],200);
+
+    }
+    public function getLinkedDb(Request $request,$id){
+        $project = Project::find($id);
+        return response()->json($project->bdds,200);
+    }
+    public function getLinkedResponsables(Request $request,$id){
+        $project = Project::find($id);
+        return response()->json($project->responsables,200);
+    }
+
+    public function getLinkedPopulations(Request $request,$id){
+        $project = Project::find($id);
+        return response()->json($project->populations,200);
+    }
+
 
     /**
      * Show the form for editing the specified resource.

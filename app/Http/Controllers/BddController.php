@@ -15,6 +15,10 @@ class BddController extends Controller
      */
     public function index(Request $request)
     {
+        if($request["keyword"] == "all"){
+            return response()->json(["data"=>Bdd::all()] ,200);
+
+        }
         $bdd =Bdd::where("name","like","%".$request["keyword"]."%")
         ->orWhere("status","like","%".$request["keyword"]."%")
         ->orWhere("engine","like","%".$request["keyword"]."%")
@@ -69,7 +73,7 @@ class BddController extends Controller
     public function show($id)
     {
         //
-        return response()->json(["bdd"=>Bdd::find($id)],200);
+        return response()->json(Bdd::find($id),200);
     }
 
     /**
@@ -114,6 +118,17 @@ class BddController extends Controller
         //
         Bdd::destroy($id);
         return response()->json(["success"=>true,"message"=>"deleted successfully"],200);
+
+    }
+    public function access(Request $request,$id){
+
+        $bdd = Bdd::find($id);
+        return response()->json($bdd->accesses,200);
+    }
+    public function linkAccess(Request $request,$id){
+        $bdd = Bdd::find($id);
+        $bdd->accesses()->sync($request["access"]);
+        return response()->json(['success' => true,"message" => "Bdd Updated Successfully"],200);
 
     }
 }

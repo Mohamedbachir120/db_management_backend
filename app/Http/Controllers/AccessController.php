@@ -69,9 +69,19 @@ class AccessController extends Controller
      */
     public function show($id)
     {
-            return response()->json(["access"=>Access::find($id)]);
+            return response()->json([Access::find($id)]);
     }
 
+    public function linkPrevillege(Request $request,$id){
+        $access = Access::find($id);
+        $access->previlleges()->sync($request["previlleges"]);
+        return response()->json(['success' => true,"message" => "access Updated Successfully"],200);
+
+    }
+    public function getLinkedPrevillege(Request $request,$id){
+        $access = Access::find($id);
+        return response()->json($access->previlleges,200);
+    }
     /**
      * Show the form for editing the specified resource.
      *

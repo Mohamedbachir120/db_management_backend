@@ -12,11 +12,37 @@ class PrevillegeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //:
-        return response()->json(["previllege"=>Previllege::all()]);
+        if($request["keyword"] == "all"){
+            return response()->json(["data"=>Previllege::all()] ,200);
 
+        }
+        $previllege =Previllege::where("name","like","%".$request["keyword"]."%")
+                ->orWhere("securable","like","%".$request["keyword"]."%")
+                ->paginate(10);
+        return response()->json($previllege ,200);
+
+    }
+
+    public function show($id)
+    {
+        //
+        $previllege = Previllege::find($id);
+        return response()->json($previllege,200);
+
+
+    }
+    public function linkAccess(Request $request,$id){
+        $previllege = Previllege::find($id);
+        $previllege->accesses()->sync($request["access"]);
+        return response()->json(['success' => true,"message" => "previllege Updated Successfully"],200);
+
+    }
+    public function getLinkedAccess(Request $request,$id){
+        $previllege = Previllege::find($id);
+        return response()->json($previllege->accesses,200);
     }
 
     /**
@@ -50,12 +76,7 @@ class PrevillegeController extends Controller
      * @param  \App\Models\Previllege  $previllege
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        
-        return response()->json(["previllege"=>Previllege::find($id)],200);
-
-    }
+   
 
     /**
      * Show the form for editing the specified resource.

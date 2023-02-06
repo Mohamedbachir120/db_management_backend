@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Bdd;
 use App\Models\LinkedServer;
+use App\Models\Previllege;
+
 use App\Models\Responsable;
 
 class Access extends Model
@@ -27,6 +29,10 @@ class Access extends Model
 
     public function responsables(){
         return $this->belongsToMany(Responsable::class);
+    }
+    public function previlleges(){
+        return $this->belongsToMany(Previllege::class);
+
     }
 
 
