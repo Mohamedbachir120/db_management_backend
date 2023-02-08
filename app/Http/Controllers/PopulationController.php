@@ -15,10 +15,11 @@ class PopulationController extends Controller
     public function index(Request $request)
     {
         if($request["keyword"] == "all"){
-            return response()->json(["data"=>Population::all()] ,200);
+            return response()->json(["data"=>Population::with("projects")->get()] ,200);
 
         }
         $population =Population::where("designation","like","%".$request["keyword"]."%")
+                ->with('projects')
                 ->paginate(10);
         return response()->json($population ,200);
     }

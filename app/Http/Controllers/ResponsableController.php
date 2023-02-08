@@ -15,12 +15,13 @@ class ResponsableController extends Controller
     public function index(Request $request)
     {
         if($request["keyword"] == "all"){
-            return response()->json(["data"=>Responsable::all()] ,200);
+            return response()->json(["data"=>Responsable::with("projects")->get()] ,200);
 
         }
         $sgbd =Responsable::where("name","like","%".$request["keyword"]."%")
                             ->orWhere("email","like","%".$request["keyword"]."%")
                             ->orWhere("phone","like","%".$request["keyword"]."%")
+                            ->with("projects")
                             ->paginate(10);
         return response()->json($sgbd ,200);
 
@@ -99,17 +100,8 @@ class ResponsableController extends Controller
 
 
     }
-    public function linkAccess(Request $request,$id){
-        $responsable = Responsable::find($id);
-        $responsable->accesses()->sync($request["access"]);
-        return response()->json(['success' => true,"message" => "Responsable Updated Successfully"],200);
-
-    }
-    public function getLinkedAccess(Request $request,$id){
-        $responsable = Responsable::find($id);
-        return response()->json($responsable->accesses,200);
-    }
-
+   
+    
     /**
      * Remove the specified resource from storage.
      *

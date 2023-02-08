@@ -14,7 +14,8 @@ use App\Http\Helpers\Crypto;
 use App\Models\Population;
 use App\Models\Project;
 use App\Models\Server;
-
+use App\Models\Sgbd;
+use App\Models\Bdd;
 
 class AuthController extends Controller
 {
@@ -142,8 +143,11 @@ class AuthController extends Controller
     public function stats(Request $request){
 
         $populations = Population::withCount("projects")->get();
+
         $servers = Server::withCount("bdds")->take(10)->orderBy("bdds_count","desc")->get();
-        return response()->json(["populations"=>$populations,"servers"=>$servers],200);
+        $count_bdd= Bdd::all()->count();
+        $sbgds = Sgbd::withCount("bdds")->orderBy("bdds_count","desc")->get();
+        return response()->json(["populations"=>$populations,"sgbds"=>$sbgds,"count_bdd"=>$count_bdd,"servers"=>$servers],200);
 
     }
     public function update_password(Request $request){
